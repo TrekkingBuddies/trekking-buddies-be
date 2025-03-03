@@ -1,5 +1,109 @@
 {
     "GET /api": {
       "description": "serves up a json representation of all the available endpoints of the api"
+    },
+    "GET /api/users": {
+      "description": "serves an array of all users with uid appended",
+      "queries": [],
+      "exampleResponse": {
+        "users": [
+            {
+                "uid": "initial_user",
+                "email": "test@sdsf.com",
+                "bio": "dsf sfstfsd sdfsdf ",
+                "skill_level": "prof",
+                "location": {
+                    "_latitude": 61.355591,
+                    "_longitude": 15.882829
+                },
+                "username": "test2",
+                "preferences": [
+                    "uphill",
+                    "dog friendly"
+                ],
+                "avatar_id": 5
+            }
+        ]
+      }
+    },
+    "GET /api/users/:userId": {
+      "description": "serves a user object",
+      "queries": [],
+      "exampleResponse": {
+        "user": {
+         "email": "test@sdsf.com",
+            "bio": "dsf sfstfsd sdfsdf ",
+                "skill_level": "prof",
+                "location": {
+                    "_latitude": 61.355591,
+                    "_longitude": 15.882829
+                },
+                "username": "test2",
+                "preferences": [
+                    "uphill",
+                    "dog friendly"
+                ],
+                "avatar_id": 5
+        }
+      }
+    },
+    "POST /api/users": {
+      "description": "adds a user",
+      "queries": [],
+      "exampleRequest": { "email": "test@sdsf.com",
+			"bio": "dsf sfstfsd sdfsdf ",
+			"skill_level": "prof",
+			"location": {
+				"_latitude": 61.355591,
+				"_longitude": 15.882829
+			},
+			"username": "test2",
+			"preferences": [
+				"uphill",
+				"dog friendly"
+			],
+			"avatar_id": 5 }, 
+      "exampleResponse": {
+        "user": { "email": "test@sdsf.com",
+			"bio": "dsf sfstfsd sdfsdf ",
+			"skill_level": "prof",
+			"location": {
+				"_latitude": 61.355591,
+				"_longitude": 15.882829
+			},
+			"username": "test2",
+			"preferences": [
+				"uphill",
+				"dog friendly"
+			],
+			"avatar_id": 5 }
+      }
+    },
+    "PATCH /api/users/:userId": {
+      "description": "serves an updated user",
+      "queries": [],
+      "exampleRequest": { "email": "gloomy" }, 
+      "exampleResponse": {
+        "user": {
+         "email": "test@sdsf.com",
+			"bio": "dsf sfstfsd sdfsdf ",
+			"skill_level": "prof",
+			"location": {
+				"_latitude": 61.355591,
+				"_longitude": 15.882829
+			},
+			"username": "gloomy",
+			"preferences": [
+				"uphill",
+				"dog friendly"
+			],
+			"avatar_id": 5
+        }
+      }
+    },
+    "DELETE /api/users/:userId": {
+      "description": "deletes a user with a particular uid",
+      "queries": [],
+      "exampleResponse": {}
     }
 }

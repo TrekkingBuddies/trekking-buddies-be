@@ -20,8 +20,25 @@ This is an guide to the possible errors that may happen in your app.
 
 ### GET `/not-a-route`
 
-- Invalid (e.g. `/api-get-users`) -- 404 Not Found
+- Invalid (e.g. `/api-get-users`) -- 404 Endpoint Not Found
 
 ---
 
 ## Available Routes
+
+### GET `/api/users/:userId`
+
+- Well formed `userId` that doesn't exist in the database (e.g. `/999999`) -- 404 Not Found
+
+### POST `/api/users/:userId`
+
+- Empty body -- 400 Bad Request
+
+### PATCH `/api/users/:userId`
+
+- Well formed `userId` that doesn't exist in the database (e.g. `/999999`) -- 404 Not Found
+- Empty body -- 400 Bad Request
+
+### DELETE `/api/users/:userId`
+
+- Well formed `:userId` that doesn't exist in the database (e.g. `/999999`) -- 404 Not Found
