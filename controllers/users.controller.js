@@ -8,7 +8,13 @@ const {
 
 exports.postUser = (req, res, next) => {
   const uid = req.user.uid; // from verifyUser
-  createUser(uid, req.body)
+  const userData = req.body;
+
+  if (!userData || Object.keys(userData).length === 0) {
+    return res.status(400).send({ msg: "Bad Request" });
+  }
+  
+  createUser(uid, userData)
     .then((user) => {
       res.status(201).send({ user: user.data() });
     })
@@ -28,7 +34,13 @@ exports.getUserById = (req, res, next) => {
 };
 
 exports.patchUser = (req, res, next) => {
-  updateUserById(req.params.userId, req.body)
+  const userData = req.body;
+
+  if (!userData || Object.keys(userData).length === 0) {
+    return res.status(400).send({ msg: "Bad Request" });
+  }
+
+  updateUserById(req.params.userId, userData)
     .then((user) => {
       res.status(200).send({ user: user });
     })

@@ -14,6 +14,10 @@ app.use(VerifyToken);
 app.use("/api", apiRoutes);
 app.use("/api/users", usersRoutes);
 
+app.use((req, res, next) => {
+  res.status(404).send({ msg: "Endpoint Not Found" });
+});
+
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
     res.status(err.status).send({ msg: err.msg });
