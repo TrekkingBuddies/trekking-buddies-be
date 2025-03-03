@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "express": "^4.21.2",
+    "firebase": "^11.4.0"
+  },
+  "name": "trekkingbuddies-be",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node listen.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrekkingBuddies/trekking-buddies-be.git"
+  }
+}
