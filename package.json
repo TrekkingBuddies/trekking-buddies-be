@@ -1,14 +1,15 @@
 {
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.2",
-    "firebase": "^11.4.0"
+    "firebase": "^11.4.0",
+    "firebase-admin": "^13.1.0"
   },
   "name": "trekkingbuddies-be",
   "version": "1.0.0",
   "main": "app.js",
-  "devDependencies": {},
   "scripts": {
-    "start": "node listen.js"
+    "start": "nodemon listen.js"
   },
   "keywords": [],
   "author": "",
