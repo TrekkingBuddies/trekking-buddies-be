@@ -1,15 +1,26 @@
 const auth = require("../config/firebase");
 
 const VerifyToken = async (req, res, next) => {
-  const token = req.headers.authorization;
+  if (req.url === "/favicon.ico") {
+    return next();
+  }
+
+  const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).send({ msg: "No token provided" });
+  }
 
   try {
     const decodedToken = await auth.verifyIdToken(token);
     if (decodedToken) {
       req.user = decodedToken;
       return next();
+    } else {
+      return res.status(401).send({ msg: "Invalid token" });
     }
   } catch (e) {
+    console.error("Token verification error:", e);
     return res.status(401).send({ msg: "Invalid token" });
   }
 };
