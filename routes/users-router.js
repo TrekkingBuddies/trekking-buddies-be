@@ -1,9 +1,20 @@
-const { postUser} = require("../controllers/users.controller");
+const {
+  postUser,
+  getUsers,
+  getUserById,
+  patchUser,
+  deleteUser,
+} = require("../controllers/users.controller");
 
 const usersRouter = require("express").Router();
 
-usersRouter.route("/").post(postUser);
+usersRouter.route("/").get(getUsers).post(postUser);
 
-usersRouter.route("/:userId");
+usersRouter
+  .route("/:userId")
+  .get(getUserById)
+  .post(postUser)
+  .patch(patchUser)
+  .delete(deleteUser);
 
 module.exports = usersRouter;
