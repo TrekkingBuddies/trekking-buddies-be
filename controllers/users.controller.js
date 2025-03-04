@@ -13,10 +13,10 @@ exports.postUser = (req, res, next) => {
   if (!userData || Object.keys(userData).length === 0) {
     return res.status(400).send({ msg: "Bad Request" });
   }
-  
+
   createUser(uid, userData)
     .then((user) => {
-      res.status(201).send({ user: user.data() });
+      res.status(201).send({ user: user });
     })
     .catch((err) => {
       next(err);
@@ -34,13 +34,21 @@ exports.getUserById = (req, res, next) => {
 };
 
 exports.patchUser = (req, res, next) => {
+  const tokenUid = req.user.uid; // from verifyUser
+  const requestUid = req.params.userId;
+
+  if (requestUid !== tokenUid) {
+    //  if user tries to patch their own info
+    return res.status(403).send({ msg: "Forbidden" });
+  }
+
   const userData = req.body;
 
   if (!userData || Object.keys(userData).length === 0) {
     return res.status(400).send({ msg: "Bad Request" });
   }
 
-  updateUserById(req.params.userId, userData)
+  updateUserById(requestUid, userData)
     .then((user) => {
       res.status(200).send({ user: user });
     })
@@ -50,6 +58,14 @@ exports.patchUser = (req, res, next) => {
 };
 
 exports.deleteUser = (req, res, next) => {
+  const tokenUid = req.user.uid; // from verifyUser
+  const requestUid = req.params.userId;
+
+  if (requestUid !== tokenUid) {
+    //  if user tries to delete their own info
+    return res.status(403).send({ msg: "Forbidden" });
+  }
+
   removeUserById(req.params.userId)
     .then(() => {
       res.status(204).send();

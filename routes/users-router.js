@@ -13,7 +13,6 @@ usersRouter.route("/").get(getUsers).post(postUser);
 usersRouter
   .route("/:userId")
   .get(getUserById)
-  .post(postUser)
   .patch(patchUser)
   .delete(deleteUser);
 

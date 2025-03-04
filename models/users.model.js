@@ -1,7 +1,16 @@
 const { db } = require("../config/firebase");
 
 exports.createUser = (userId, userData) => {
-  return db.collection("users").doc(userId).set(userData);
+  return db
+    .collection("users")
+    .doc(userId)
+    .set(userData)
+    .then(() => {
+      return db.collection("users").doc(userId).get();
+    })
+    .then((createdDoc) => {
+      return createdDoc.data();
+    });
 };
 
 exports.selectUserById = (userId) => {

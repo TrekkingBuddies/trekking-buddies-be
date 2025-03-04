@@ -1,11 +1,11 @@
-const auth = require("../config/firebase");
+const { auth } = require("../config/firebase");
 
 const VerifyToken = async (req, res, next) => {
   if (req.url === "/favicon.ico") {
     return next();
   }
 
-  const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
+  const token = req.headers.authorization;
 
   if (!token) {
     return res.status(401).send({ msg: "No token provided" });
