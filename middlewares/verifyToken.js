@@ -6,6 +6,7 @@ const VerifyToken = async (req, res, next) => {
   }
 
   const token = req.headers.authorization;
+  console.log(token)
 
   if (!token) {
     return res.status(401).send({ msg: "No token provided" });
@@ -17,7 +18,7 @@ const VerifyToken = async (req, res, next) => {
       req.user = decodedToken;
       return next();
     } else {
-      return res.status(401).send({ msg: "Invalid token" });
+      return res.status(401).send({ msg: "Invalid token no token" });
     }
   } catch (e) {
     console.error("Token verification error:", e);
