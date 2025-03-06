@@ -4,7 +4,7 @@
     },
     "GET /api/users": {
       "description": "serves an array of all users with uid appended",
-      "queries": [],
+      "queries": ["skill_level", "preferences", "limit", "p"],
       "exampleResponse": {
         "users": [
             {

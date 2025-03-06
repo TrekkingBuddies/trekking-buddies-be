@@ -7,9 +7,9 @@
   },
   "name": "trekkingbuddies-be",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "listen.js",
   "scripts": {
-    "start": "nodemon listen.js"
+    "start": "node listen.js"
   },
   "keywords": [],
   "author": "",
