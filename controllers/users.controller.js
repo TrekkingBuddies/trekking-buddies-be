@@ -76,9 +76,16 @@ exports.deleteUser = (req, res, next) => {
 };
 
 exports.getUsers = (req, res, next) => {
-  selectUsers()
-    .then((users) => {
-      res.status(200).send({ users: users });
+  const { skill_level, preferences, limit, p } = req.query;
+
+  let requestedPreferences = preferences ? preferences.split(",") : null;
+
+  const parsedLimit = limit ? parseInt(limit, 10) : null;
+  const parsedPage = p ? parseInt(p, 10) : null;
+
+  selectUsers(skill_level, requestedPreferences, parsedLimit, parsedPage)
+    .then((usersData) => {
+      res.status(200).send(usersData);
     })
     .catch((err) => {
       next(err);
