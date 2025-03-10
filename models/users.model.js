@@ -1,10 +1,20 @@
 const { db } = require("../config/firebase");
+const geofire = require("geofire-common");
+const {
+  geohashForLocation,
+  geohashQueryBounds,
+  distanceBetween,
+} = require("geofire-common");
 
 exports.createUser = (userId, userData) => {
+  const hash = geofire.geohashForLocation([
+    Number(userData.latLong.latitude),
+    Number(userData.latLong.longitude),
+  ]);
   return db
     .collection("users")
     .doc(userId)
-    .set(userData)
+    .set({ ...userData, geohash: hash })
     .then(() => {
       return db.collection("users").doc(userId).get();
     })
@@ -60,7 +70,14 @@ exports.removeUserById = (userId) => {
     });
 };
 
-exports.selectUsers = (skill_level, preferences, limit, p) => {
+exports.selectUsers = (
+  skill_level,
+  preferences,
+  limit,
+  p,
+  distance = 10000,
+  uid
+) => {
   const validSkillLevel = ["novice", "intermediate", "pro"];
   const validPreferences = ["uphill", "flat", "countryside", "dog friendly"];
 
@@ -89,43 +106,68 @@ exports.selectUsers = (skill_level, preferences, limit, p) => {
     });
   }
 
-  let query = db.collection("users");
+  return this.selectUserById(uid).then((user) => {
+    const center = [
+      Number(user.latLong.latitude),
+      Number(user.latLong.longitude),
+    ];
+    const bounds = geohashQueryBounds(center, Number(distance) * 1000);
+    const promises = [];
 
-  if (skill_level) {
-    query = query.where("skill_level", "==", skill_level);
-  }
-
-  if (preferences && preferences.length > 0) {
-    query = query.where("preferences", "array-contains-any", preferences);
-  }
-
-  let totalCountQuery = query; // save a copy for total count
-
-  if (limit && p) {
-    const startAt = (p - 1) * limit;
-    query = query.limit(limit).offset(startAt);
-  }
-
-  return query.get().then((usersCollection) => {
-    let users = [];
-    usersCollection.forEach((doc) => {
-      users.push({ uid: doc.id, ...doc.data() });
-    });
-
-    // filter users on backend who have all requested preferences as Firestore does not support multiple filters
-    if (preferences && preferences.length > 0) {
-      users = users.filter((user) =>
-        preferences.every((pref) => user.preferences.includes(pref))
-      );
+    for (const b of bounds) {
+      const q = db
+        .collection("users")
+        .where("geohash", ">=", b[0])
+        .where("geohash", "<=", b[1])
+        .get();
+      promises.push(q);
     }
 
-    if (limit && p) {
-      return totalCountQuery.get().then((totalCountSnapshot) => {
-        const total_count = totalCountSnapshot.size;
-        return { users, total_count };
-      });
-    } else {
+    return Promise.all(promises).then((snapshots) => {
+      let users = [];
+      for (const snap of snapshots) {
+        snap.forEach((doc) => {
+          users.push({ uid: doc.id, ...doc.data() });
+        });
+      }
+
+      users = users
+        .filter((user) => {
+          const userLat = Number(user.latLong.latitude);
+          const userLng = Number(user.latLong.longitude);
+          if (!userLat || !userLng) return false;
+          const userDistance =
+            distanceBetween([userLat, userLng], center) * 1000;
+          return userDistance <= Number(distance) * 1000 && user.uid !== uid;
+        })
+        .map((user) => {
+          const userLat = Number(user.latLong.latitude);
+          const userLng = Number(user.latLong.longitude);
+          const userDistance = distanceBetween([userLat, userLng], center);
+          return { ...user, distance: Math.round(userDistance) };
+        })
+        .sort((a, b) => a.distance - b.distance);
+
+      if (preferences && preferences.length > 0) {
+        users = users.filter((user) =>
+          preferences.every((pref) => user.preferences.includes(pref))
+        );
+      }
+
+      if (limit && p) {
+        const startAt = (p - 1) * limit;
+        users = users.slice(startAt, startAt + limit);
+      }
+
+      let query = db.collection("users");
+      if (skill_level) {
+        query = query.where("skill_level", "==", skill_level);
+      }
+
+      if (preferences && preferences.length > 0) {
+        query = query.where("preferences", "array-contains-any", preferences);
+      }
       return { users };
-    }
+    });
   });
 };
