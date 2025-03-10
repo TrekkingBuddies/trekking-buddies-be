@@ -115,12 +115,12 @@ exports.selectUsers = (
     const promises = [];
 
     for (const b of bounds) {
-      const q = db
-        .collection("users")
-        .where("geohash", ">=", b[0])
-        .where("geohash", "<=", b[1])
-        .get();
-      promises.push(q);
+      let q = db.collection("users");
+      if (skill_level) {
+        q = q.where("skill_level", "==", skill_level);
+      }
+      q = q.where("geohash", ">=", b[0]).where("geohash", "<=", b[1]);
+      promises.push(q.get()); 
     }
 
     return Promise.all(promises).then((snapshots) => {
@@ -157,15 +157,6 @@ exports.selectUsers = (
       if (limit && p) {
         const startAt = (p - 1) * limit;
         users = users.slice(startAt, startAt + limit);
-      }
-
-      let query = db.collection("users");
-      if (skill_level) {
-        query = query.where("skill_level", "==", skill_level);
-      }
-
-      if (preferences && preferences.length > 0) {
-        query = query.where("preferences", "array-contains-any", preferences);
       }
       return { users };
     });
