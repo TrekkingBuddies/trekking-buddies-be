@@ -8,20 +8,22 @@
       "exampleResponse": {
         "users": [
             {
-                "uid": "initial_user",
-                "email": "test@sdsf.com",
-                "bio": "dsf sfstfsd sdfsdf ",
-                "skill_level": "prof",
-                "location": {
-                    "_latitude": 61.355591,
-                    "_longitude": 15.882829
-                },
-                "username": "test2",
-                "preferences": [
-                    "uphill",
-                    "dog friendly"
-                ],
-                "avatar_id": 5
+              "uid": "initial_user",
+              "email": "test@sdsf.com",
+              "bio": "dsf sfstfsd sdfsdf ",
+              "geohash": "gcw5yjunb",
+              "skill_level": "prof",
+              "latLong": {
+                  "latitude": 53.480759299999995,
+                  "longitude": -2.2426304999999997
+              },
+              "location": "Manchester",
+              "username": "test2",
+              "preferences": [
+                "uphill",
+                "dog friendly"
+              ],
+              "avatar_id": 5
             }
         ]
       }
@@ -31,52 +33,60 @@
       "queries": [],
       "exampleResponse": {
         "user": {
-         "email": "test@sdsf.com",
+            "email": "tester@gmail.com",
             "bio": "dsf sfstfsd sdfsdf ",
-                "skill_level": "prof",
-                "location": {
-                    "_latitude": 61.355591,
-                    "_longitude": 15.882829
-                },
-                "username": "test2",
-                "preferences": [
-                    "uphill",
-                    "dog friendly"
-                ],
-                "avatar_id": 5
+            "geohash": "hgw2yjunb",
+            "skill_level": "intermediate",
+            "latLong": {
+                "latitude": 53.480759299999995,
+                "longitude": -2.2426304999999997
+            },
+            "location": "Manchester",
+            "username": "test2",
+            "preferences": [
+              "uphill",
+              "flat"
+            ],
+            "avatar_id": 2
         }
       }
     },
     "POST /api/users": {
       "description": "adds a user",
       "queries": [],
-      "exampleRequest": { "email": "test@sdsf.com",
-			"bio": "dsf sfstfsd sdfsdf ",
-			"skill_level": "prof",
-			"location": {
-				"_latitude": 61.355591,
-				"_longitude": 15.882829
-			},
-			"username": "test2",
-			"preferences": [
-				"uphill",
-				"dog friendly"
-			],
-			"avatar_id": 5 }, 
+      "exampleRequest": { 
+        "email": "test@sdsf.com",
+			  "bio": "dsf sfstfsd sdfsdf ",
+			  "skill_level": "prof",
+			  "latLong": {
+				  "latitude": 53.4083714,
+				  "longitude": -2.9915726
+			  },
+        "location": "Liverpool",
+			  "username": "test2",
+			  "preferences": [
+				  "uphill",
+				  "dog friendly"
+			  ],
+			  "avatar_id": 5 }, 
       "exampleResponse": {
-        "user": { "email": "test@sdsf.com",
-			"bio": "dsf sfstfsd sdfsdf ",
-			"skill_level": "prof",
-			"location": {
-				"_latitude": 61.355591,
-				"_longitude": 15.882829
-			},
-			"username": "test2",
-			"preferences": [
-				"uphill",
-				"dog friendly"
-			],
-			"avatar_id": 5 }
+        "user": {
+			  "email": "test@sdsf.com",
+			  "bio": "dsf sfstfsd sdfsdf ",
+        "geohash": "gcw5yjunb",
+			  "skill_level": "prof",
+			  "latLong": {
+				  "latitude": 53.4083714,
+				  "longitude": -2.9915726
+			  },
+        "location": "Liverpool",
+			  "username": "test2",
+			  "preferences": [
+				  "uphill",
+				  "dog friendly"
+			  ],
+			  "avatar_id": 5  
+    }
       }
     },
     "PATCH /api/users/:userId": {
@@ -85,19 +95,21 @@
       "exampleRequest": { "email": "gloomy" }, 
       "exampleResponse": {
         "user": {
-         "email": "test@sdsf.com",
-			"bio": "dsf sfstfsd sdfsdf ",
-			"skill_level": "prof",
-			"location": {
-				"_latitude": 61.355591,
-				"_longitude": 15.882829
-			},
-			"username": "gloomy",
-			"preferences": [
-				"uphill",
-				"dog friendly"
-			],
-			"avatar_id": 5
+          "email": "test@sdsf.com",
+          "bio": "dsf sfstfsd sdfsdf ",
+          "geohash": "gtw7hgynb",
+          "skill_level": "prof",
+			    "latLong": {
+				    "latitude": 61.355591,
+				    "longitude": 15.882829
+			    },
+          "location": "Leeds",
+			    "username": "gloomy",
+			    "preferences": [
+				    "uphill",
+				    "dog friendly"
+			    ],
+			    "avatar_id": 5
         }
       }
     },
