@@ -2,7 +2,7 @@ Project Overview
 
 This repository is the backend portion of the TrekkingBuddies App. It allows the frontend portion to interact with the hosted Non-SQL database on Firestore.
 
-Using a GET /api request will provide an overview of all functionality. //needs work
+Using a GET /api request will provide an overview of all functionality. 
 
 Coding language: Javascript
 
